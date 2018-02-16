@@ -1,0 +1,50 @@
+package project;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Scanner;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DB;
+import com.mongodb.DBCollection; 
+import com.mongodb.MongoClient;
+import com.mongodb.DBCursor;
+public class Code {
+	public static void main(String[] args)throws IOException{
+		MongoClient conn= new MongoClient("localhost",27017);
+		//Multi t1=new Multi();
+		DB db= conn.getDB("xyz");
+		DBCollection col=db.getCollection("mycollect");
+		FileReader fin = new FileReader("/home/sowmi/aaa.txt");
+		Scanner sc= new Scanner(fin);
+		String st1="";String st2="";String st3="";
+		while(sc.hasNext()){
+			BasicDBObject document = new BasicDBObject();
+			String str1= new String(sc.nextLine());
+			String str2= new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+			if(str1.contains("temperature"))
+			{
+			st1= str1.substring(16);
+			document.put("TimeStamp", str2);
+			document.put("Temperature",st1);
+			}
+			if(str1.contains("humidity")){
+			st2=str1.substring(13);
+			document.put("TimeStamp", str2);
+			document.put("Humidity", st2);
+			}
+			if(str1.contains("ph")){
+				st3=str1.substring(6);
+				document.put("TimeStamp", str2);
+				document.put("PH", st3);
+				}
+			col.insert(document);
+			//t1.start();
+			
+			
+		}
+		
+		
+		}
+}
