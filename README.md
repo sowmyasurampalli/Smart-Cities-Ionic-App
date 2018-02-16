@@ -1,1 +1,0 @@
-# Smart-Cities-Ionic-App
